@@ -144,7 +144,7 @@ app.get('/api/photo/:id', (req, res) => {
 // All photos (public)
 app.get('/api/photos', (req, res) => {
   const sql = `
-    SELECT p.id, p.filename, p.created_at, u.username AS uploader
+    SELECT p.id, p.filename, p.created_at, u.display_name AS uploader
     FROM photos p
     LEFT JOIN users u ON p.uploader_id = u.id
     ORDER BY p.created_at DESC
@@ -282,3 +282,4 @@ app.delete('/api/photo/:id', requireAuth, (req, res) => {
 
 // --- Start Server ---
 app.listen(PORT, () => console.log(`🚀 Server running at http://localhost:${PORT}`));
+
