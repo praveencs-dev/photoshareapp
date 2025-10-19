@@ -95,7 +95,7 @@ async function loadUser() {
     if (!res.ok) throw new Error('Not logged in');
     const user = await res.json();
 
-    document.getElementById('username').innerText = user.username;
+    document.getElementById('username').innerText = user.display_name;
     // Optionally, set user avatar if stored
     // document.getElementById('userLogo').src = `/images/${user.username}.png`;
   } catch (err) {
@@ -110,3 +110,4 @@ loadUser();
   </script>
 </body>
 </html>
+
