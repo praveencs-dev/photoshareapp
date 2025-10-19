@@ -1,0 +1,146 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body background */
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #6e8efb, #a777e3);
+  color: #333;
+  padding: 20px;
+}
+
+/* Main card */
+main {
+  background: #ffffffcc;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  animation: fadeIn 1s ease;
+}
+
+/* Heading */
+main h2 {
+  margin-bottom: 25px;
+  color: #4b2be3;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+/* Labels */
+form label {
+  display: block;
+  text-align: left;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Inputs */
+form input[type="file"],
+form input[type="text"],
+form input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+form input:focus {
+  border-color: #4b2be3;
+  box-shadow: 0 0 8px rgba(75,43,227,0.3);
+  outline: none;
+}
+
+/* Button */
+form button {
+  width: 100%;
+  padding: 12px;
+  background: #4b2be3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+form button:hover {
+  background: #341cb3;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Message */
+#msg {
+  margin-top: 15px;
+  color: #27ae60;
+  font-weight: 500;
+}
+
+/* Back link */
+p a {
+  display: inline-block;
+  margin-top: 20px;
+  color: #4b2be3;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+p a:hover {
+  text-decoration: underline;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive for mobile */
+@media (max-width: 480px) {
+  main {
+    padding: 30px 20px;
+  }
+  
+  main h2 {
+    font-size: 24px;
+  }
+
+  form button {
+    font-size: 16px;
+  }
+}
+#dropArea {
+  border: 2px dashed #4b2be3;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  color: #4b2be3;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#dropArea.dragover {
+  background: #4b2be3;
+  color: #fff;
+}
+#dropArea p {
+  margin: 0;
+  font-weight: bold;
+}

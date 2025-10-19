@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Upload - PhotoShare</title>
+  <link rel="stylesheet" href="/css/upload.css">
+</head>
+<body>
+  <main>
+    <h2>Upload Photo</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <label>Choose photo<br><input type="file" name="photo" accept="image/*" required></label><br>
+      <label>Image Description<br><input id="tag" name="desc" type="text"></label><br>
+      <label>Tag users (comma separated usernames)<br><input id="tag" name="tags" type="text"></label><br>
+      <button type="submit">Upload</button>
+    </form>
+    <div id="msg"></div>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+  </main>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const fd = new FormData(form);
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const j = await res.json();
+      if (j.success) {
+        document.getElementById('msg').innerText = 'Photo uploaded!';
+        setTimeout(() => location.href = '/index.html', 800);
+      } else document.getElementById('msg').innerText = j.error || 'Upload failed';
+    });
+  </script>
+</body>
+</html>

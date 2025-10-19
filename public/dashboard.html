@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Dashboard - My Uploads</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+  <style>
+    /* Quick styling for photos */
+    #photos { display: flex; flex-wrap: wrap; gap: 20px; padding: 20px; }
+    .photo { border: 1px solid #ccc; padding: 10px; width: 200px; }
+    .photo img { width: 100%; height: auto; display: block; margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+ <header>
+  <h1>My Dashboard</h1>
+  <nav>
+    <div class="user-info">
+      <img src="image/user.jpg" alt="User Logo" id="userLogo">
+      <span id="username">Username</span>
+    </div>
+    <a href="/">Home</a>
+    <a href="/upload">Upload</a>
+    <button id="logoutBtn">Logout</button>
+  </nav>
+</header>
+
+
+  <main>
+    <h2>My Uploaded Photos</h2>
+    <section id="photos"></section>
+  </main>
+
+  <script>
+    async function loadPhotos() {
+      try {
+        const res = await fetch('/api/myphotos');
+        if (!res.ok) throw new Error('Failed to fetch photos');
+
+        const photos = await res.json();
+        const container = document.getElementById('photos');
+
+        if (!photos.length) {
+          container.innerHTML = '<p>You have not uploaded any photos yet.</p>';
+          return;
+        }
+
+        // Render each photo
+        container.innerHTML = photos.map(p => `
+  <article class="photo" data-id="${p.id}">
+    <h3>${p.filename}</h3>
+    <img src="/api/photo/${p.id}" alt="${p.filename}" />
+    <p>Uploaded on: ${new Date(p.created_at).toLocaleString()}</p>
+    <p>Tagged: ${p.tags && p.tags.length ? p.tags.join(', ') : '—'}</p>
+    <button class="deleteBtn" data-id="${p.id}">Delete</button>
+  </article>
+`).join('');
+      } catch (err) {
+        console.error(err);
+        document.getElementById('photos').innerHTML = '<p>Error loading photos.</p>';
+      }
+    }
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      location.href = '/';
+    });
+
+    loadPhotos();
+    document.addEventListener('click', async (e) => {
+  if (e.target.classList.contains('deleteBtn')) {
+    const id = e.target.dataset.id;
+    if (!confirm('Are you sure you want to delete this photo?')) return;
+
+    try {
+      const res = await fetch(`/api/photo/${id}`, { method: 'DELETE' });
+      const result = await res.json();
+      if (result.success) {
+        // Remove the photo element from DOM
+        e.target.closest('.photo').remove();
+      } else {
+        alert(result.error || 'Failed to delete photo');
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Error deleting photo');
+    }
+  }
+});
+// Load current user info
+async function loadUser() {
+  try {
+    const res = await fetch('/api/me');
+    if (!res.ok) throw new Error('Not logged in');
+    const user = await res.json();
+
+    document.getElementById('username').innerText = user.username;
+    // Optionally, set user avatar if stored
+    // document.getElementById('userLogo').src = `/images/${user.username}.png`;
+  } catch (err) {
+    console.error(err);
+    document.getElementById('username').innerText = 'User';
+  }
+}
+
+loadUser();
+
+
+  </script>
+</body>
+</html>

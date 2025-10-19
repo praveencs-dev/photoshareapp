@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Register - PhotoShare</title>
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+  <main>
+    <h2>Register</h2>
+    <form id="registerForm">
+      <label>Username<br><input name="username" required></label><br>
+      <label>Password<br><input type="password" name="password" required></label><br>
+      <label>Display Name<br><input name="display_name"></label><br>
+      <button type="submit">Register</button>
+    </form>
+    <div id="msg"><a href="login.html">Already I Have Registered</a>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const f = e.target;
+      const body = { username: f.username.value, password: f.password.value, display_name: f.display_name.value };
+      const res = await fetch('/api/register', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const j = await res.json();
+      if (j.success) location.href = '/dashboard';
+      else document.getElementById('msg').innerText = j.error || 'Registration failed';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>PhotoShare - Home</title>
+  <link rel="stylesheet" href="/css/index.css">
+  <style>
+    #image{
+        height: 400px;
+        width: auto;
+        float: center;
+    }
+    .photo{
+        text-align: center;
+        justify-items: center;
+    }
+    body{
+        background-color:linear-gradient( to right,rgb(236, 67, 61),rgb(240, 55, 224));
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>PhotoShare</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/login">Login</a>
+      <a href="/register">Register</a>
+      <a href="/upload">Upload</a>
+      <a href="/dashboard">Dashboard</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="photoFeed"></section>
+  </main>
+
+  <script>
+    async function loadPhotos() {
+      const res = await fetch('/api/photos');
+      const photos = await res.json();
+      const container = document.getElementById('photoFeed');
+      if (!photos.length) {
+        container.innerHTML = '<p>No photos uploaded yet.</p>';
+        return;
+      }
+
+      container.innerHTML = photos.map(p => `
+        <article class="photo">
+          <img id="image" src="/api/photo/${p.id}" alt="${p.filename}" />
+          <h3>${p.filename}</h3>
+          <p>Uploaded by <b>${p.uploader || 'unknown'}</b> on ${new Date(p.created_at).toLocaleString()}</p>
+          <p>Tagged: ${p.tags.join(', ') || '—'}</p>
+        </article>
+      `).join('');
+    }
+
+    loadPhotos();
+  </script>
+</body>
+</html>
