@@ -229,7 +229,7 @@ app.get("/api/photos", (req, res) => {
   });
 });
 
-// Get only logged-in user's photos
+
 // Get only logged-in user's photos
 app.get("/api/myphotos", requireAuth, (req, res) => {
   const uid = req.session.userId; // <- use userId from session
